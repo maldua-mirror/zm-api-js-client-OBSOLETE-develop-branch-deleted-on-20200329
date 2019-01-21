@@ -2084,6 +2084,22 @@ type ActionOpResponse {
 	action: ActionOpResponseData
 }
 
+type DomainInfoAttr{
+	name: String
+	value: String
+}
+
+type DomainInfo {
+	name: String
+	id: ID
+	attr: [DomainInfoAttr]
+}
+
+type DomainInfoResponse {
+	domain: [DomainInfo]
+}
+
+
 # Zimbra GraphQL Queries
 # - [[SOAP API Reference]](https://files.zimbra.com/docs/soap_api/8.7.11/api-reference/index.html)
 # - [[SOAP Documentation]](https://github.com/Zimbra/zm-mailbox/blob/develop/store/docs/soap.txt)
@@ -2133,6 +2149,7 @@ type Query {
 		needExp: Boolean,
 		fetch: String
 	): Conversation
+	getDomainInfo: DomainInfoResponse
 	getFilterRules: [Filter]
 	getFolder(
 		visible: Boolean,

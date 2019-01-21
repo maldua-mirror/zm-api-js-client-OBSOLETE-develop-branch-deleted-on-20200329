@@ -88,6 +88,7 @@ export function createZimbraSchema(
 					client.getContactFrequency(variables as GetContactFrequencyOptions),
 				getConversation: (_, variables) =>
 					client.getConversation(variables as GetConversationOptions),
+				getDomainInfo: client.getDomainInfo,
 				getFilterRules: client.getFilterRules,
 				getFolder: (_: any, variables) =>
 					client.getFolder(variables as GetFolderOptions),

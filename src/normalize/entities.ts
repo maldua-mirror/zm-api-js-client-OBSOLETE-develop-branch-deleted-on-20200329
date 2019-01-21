@@ -481,3 +481,18 @@ export const ContactInputRequest = new Entity({
 	a: ['attributes', ContactInputAttributes],
 	m: 'memberOps'
 });
+
+export const DomainInfoAttr = new Entity({
+	n: 'name',
+	_content: 'value'
+});
+
+export const DomainInfo = new Entity({
+	name: 'name',
+	id: 'id',
+	a: ['attr', DomainInfoAttr]
+});
+
+export const DomainInfoResponse = new Entity({
+	domain: ['domain', DomainInfo]
+});

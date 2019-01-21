@@ -19,6 +19,7 @@ import {
 	Conversation,
 	CreateMountpointRequest,
 	CreateSignatureRequest,
+	DomainInfoResponse,
 	Filter,
 	Folder,
 	FreeBusy,
@@ -446,6 +447,18 @@ export class ZimbraBatchClient {
 			c.messages = c.messages.map(this.normalizeMessage);
 			return c;
 		});
+
+	public getDomainInfo = () =>
+		this.jsonRequest({
+			name: 'GetDomainInfo',
+			namespace: Namespace.Admin,
+			body: {
+				domain: {
+					by: 'name',
+					_content: ''
+				}
+			}
+		}).then(res => normalize(DomainInfoResponse)(res));
 
 	public getFilterRules = () =>
 		this.jsonRequest({
