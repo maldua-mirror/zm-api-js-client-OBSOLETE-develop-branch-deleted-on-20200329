@@ -15,6 +15,7 @@ export interface BaseRequestOptions {
 	headers?: any;
 	jwtToken?: string | null;
 	origin?: string;
+	originAdmin?: string;
 	sessionId?: SessionId;
 	sessionSeq?: SessionSeq;
 	soapPathname?: string;

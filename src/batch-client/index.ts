@@ -32,6 +32,7 @@ import {
 } from '../normalize/entities';
 import {
 	batchJsonRequest,
+	DEFAULT_ADMIN_HOSTNAME,
 	DEFAULT_HOSTNAME,
 	DEFAULT_SOAP_PATHNAME,
 	jsonRequest
@@ -123,6 +124,7 @@ function normalizeMessage(
 
 export class ZimbraBatchClient {
 	public origin: string;
+	public originAdmin: string;
 	public sessionId: string = '1';
 	public soapPathname: string;
 	private batchDataLoader: DataLoader<RequestOptions, RequestBody>;
@@ -133,6 +135,7 @@ export class ZimbraBatchClient {
 	constructor(options: ZimbraClientOptions = {}) {
 		this.jwtToken = options.jwtToken;
 		this.origin = options.zimbraOrigin || DEFAULT_HOSTNAME;
+		this.originAdmin = options.zimbraAdminOrigin || DEFAULT_ADMIN_HOSTNAME;
 		this.soapPathname = options.soapPathname || DEFAULT_SOAP_PATHNAME;
 		this.notificationHandler = options.notificationHandler;
 
@@ -570,7 +573,11 @@ export class ZimbraBatchClient {
 
 	public jsonRequest = (options: JsonRequestOptions) =>
 		// If account name is present that means we will not be able to batch requests
-		this[options.accountName ? 'dataLoader' : 'batchDataLoader'].load(options);
+		this[
+			options.accountName || options.namespace === Namespace.Admin
+				? 'dataLoader'
+				: 'batchDataLoader'
+		].load(options);
 
 	public login = ({
 		username,
@@ -967,7 +974,8 @@ export class ZimbraBatchClient {
 	private getAdditionalRequestOptions = () => ({
 		jwtToken: this.jwtToken,
 		sessionId: this.sessionId,
-		origin: this.origin
+		origin: this.origin,
+		originAdmin: this.originAdmin
 	});
 
 	private normalizeMessage = (message: any) =>

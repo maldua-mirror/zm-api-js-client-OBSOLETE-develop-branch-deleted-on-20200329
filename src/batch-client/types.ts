@@ -47,6 +47,7 @@ export interface ZimbraClientOptions {
 	jwtToken?: string;
 	notificationHandler?: NotificationHandler;
 	soapPathname?: string;
+	zimbraAdminOrigin?: string;
 	zimbraOrigin?: string;
 }
 

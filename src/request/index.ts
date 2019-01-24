@@ -15,7 +15,9 @@ import {
 } from './types';
 
 export const DEFAULT_HOSTNAME = '/@zimbra';
+export const DEFAULT_ADMIN_HOSTNAME = '/@zimbraAdmin';
 export const DEFAULT_SOAP_PATHNAME = '/service/soap';
+export const DEFAULT_SOAP_ADMIN_PATHNAME = '/service/admin/soap';
 
 function soapCommandBody(options: RequestOptions) {
 	return {
@@ -156,10 +158,18 @@ export function jsonRequest(
 		...requestOptions,
 		credentials: requestOptions.credentials || 'include',
 		headers: requestOptions.headers || {},
-		origin: requestOptions.origin || DEFAULT_HOSTNAME,
-		soapPathname: requestOptions.soapPathname || DEFAULT_SOAP_PATHNAME,
+		origin:
+			requestOptions.namespace === Namespace.Admin
+				? requestOptions.originAdmin || DEFAULT_ADMIN_HOSTNAME
+				: requestOptions.origin || DEFAULT_HOSTNAME,
+		soapPathname:
+			requestOptions.soapPathname ||
+			(requestOptions.namespace === Namespace.Admin
+				? DEFAULT_SOAP_ADMIN_PATHNAME
+				: DEFAULT_SOAP_PATHNAME),
 		namespace: requestOptions.namespace || Namespace.Mail
 	};
+
 	const soapRequestName = `${options.name}Request`;
 	const soapResponseName = `${options.name}Response`;
 	const url = `${options.origin}${options.soapPathname}/${soapRequestName}`;
