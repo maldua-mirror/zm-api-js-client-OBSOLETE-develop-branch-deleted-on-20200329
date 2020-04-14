@@ -17,6 +17,7 @@ import {
 	ClientInfoResponse,
 	Contact,
 	Conversation,
+	CounterAppointmentInfo,
 	CreateAppSpecificPasswordResponse,
 	CreateMountpointRequest,
 	CreateSignatureRequest,
@@ -27,6 +28,7 @@ import {
 	ForwardAppointmentInviteInfo,
 	FreeBusy,
 	FreeBusyInstance,
+	GetAppointmentResponse,
 	GetFolderRequest as GetFolderRequestEntity,
 	GetRightsRequest,
 	InviteReply,
@@ -52,6 +54,7 @@ import {
 	AddMsgInput,
 	CalendarItemInput,
 	ClientInfoInput,
+	CounterAppointmentInput,
 	CreateContactInput,
 	CreateIdentityInput,
 	CreateMountpointInput,
@@ -102,6 +105,7 @@ import {
 	ActionOptions,
 	ActionType,
 	ApplyFilterRulesOptions,
+	AppointmentOptions,
 	AutoCompleteGALOptions,
 	AutoCompleteOptions,
 	ChangePasswordOptions,
@@ -383,6 +387,13 @@ export class ZimbraBatchClient {
 	public conversationAction = (options: ActionOptions) =>
 		this.action(ActionType.conversation, options);
 
+	public counterAppointment = (body: CounterAppointmentInput) =>
+		this.jsonRequest({
+			name: 'CounterAppointment',
+			body: denormalize(CounterAppointmentInfo)(body),
+			singleRequest: true
+		}).then(Boolean);
+
 	public createAppointment = (
 		accountName: string,
 		appointment: CalendarItemInput
@@ -503,6 +514,13 @@ export class ZimbraBatchClient {
 			body: {
 				...denormalize(CalendarItemCreateModifyRequest)(task)
 			},
+			singleRequest: true
+		}).then(Boolean);
+
+	public declineCounterAppointment = (body: CounterAppointmentInput) =>
+		this.jsonRequest({
+			name: 'DeclineCounterAppointment',
+			body: denormalize(CounterAppointmentInfo)(body),
 			singleRequest: true
 		}).then(Boolean);
 
@@ -648,6 +666,12 @@ export class ZimbraBatchClient {
 			},
 			singleRequest: true
 		});
+
+	public getAppointment = (options: AppointmentOptions) =>
+		this.jsonRequest({
+			name: 'GetAppointment',
+			body: options
+		}).then(res => normalize(GetAppointmentResponse)(res));
 
 	public getAppSpecificPasswords = () =>
 		this.jsonRequest({

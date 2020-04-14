@@ -222,6 +222,10 @@ export const MessageInfo = new Entity({
 	...commonMailItemFields
 });
 
+export const AppointmentInfo = new Entity({
+	inv: ['invitations', Invitation]
+});
+
 export const Conversation = new Entity({
 	...commonMailItemFields,
 	n: 'numMessages',
@@ -245,6 +249,12 @@ export const CalendarItemCreateModifyRequest = new Entity({
 	invId: 'inviteId'
 });
 
+export const CounterAppointmentInfo = new Entity({
+	rev: 'revision',
+	comp: 'componentNum',
+	m: ['message', MessageInfo],
+	invId: 'inviteId'
+});
 export const InstanceDate = new Entity({
 	d: 'date',
 	tz: 'timezone'
@@ -447,6 +457,10 @@ export const SearchResponse = new Entity({
 	cn: ['contacts', Contact],
 	appt: ['appointments', CalendarItemHitInfo],
 	hit: Hit
+});
+
+export const GetAppointmentResponse = new Entity({
+	appt: ['appointment', AppointmentInfo]
 });
 
 const RedirectAction = new Entity({
