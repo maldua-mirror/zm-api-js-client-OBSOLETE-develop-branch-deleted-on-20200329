@@ -119,6 +119,7 @@ import {
 	LoginOptions,
 	ModifyProfileImageOptions,
 	NotificationHandler,
+	Notifications,
 	RecoverAccountOptions,
 	RelatedContactsOptions,
 	ResetPasswordOptions,
@@ -181,6 +182,7 @@ function updateAbsoluteFolderPath(
 }
 
 export class ZimbraBatchClient {
+	public notifications?: Notifications;
 	public origin: string;
 	public sessionId: any;
 	public soapPathname: string;
@@ -202,7 +204,9 @@ export class ZimbraBatchClient {
 				? options.zimbraOrigin
 				: DEFAULT_HOSTNAME;
 		this.soapPathname = options.soapPathname || DEFAULT_SOAP_PATHNAME;
-		this.notificationHandler = options.notificationHandler;
+		this.notificationHandler =
+			options.notifications && options.notifications.notificationHandler;
+		this.notifications = options.notifications;
 
 		// Used for sending batch requests
 		this.batchDataLoader = new DataLoader(this.batchDataHandler, {
